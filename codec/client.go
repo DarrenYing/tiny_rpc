@@ -86,21 +86,21 @@ func (c *clientCodec) WriteRequest(r *rpc.Request, param interface{}) error {
 // ReadResponseHeader read the rpc response header from the io stream
 func (c *clientCodec) ReadResponseHeader(response *rpc.Response) error {
 	c.response.ResetHeader()
-	// 读取请求头
+	// 读取响应头
 	data, err := recvFrame(c.reader)
 	if err != nil {
 		return err
 	}
-	// 解码请求头
+	// 解码响应头
 	err = c.response.Unmarshal(data)
 	if err != nil {
 		return err
 	}
 	c.mutex.Lock()
-	response.Seq = c.response.ID
+	response.Seq = c.response.ID // 取出序列号
 	response.Error = c.response.Error
-	response.ServiceMethod = c.pending[response.Seq]
-	delete(c.pending, response.Seq) // 删除pending中的序号
+	response.ServiceMethod = c.pending[response.Seq] // 取出响应方法
+	delete(c.pending, response.Seq)                  // 删除pending中的序号
 	c.mutex.Unlock()
 	return nil
 }
