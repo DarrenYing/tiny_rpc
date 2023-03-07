@@ -89,7 +89,7 @@ func (r *RequestHeader) Unmarshal(data []byte) (err error) {
 func (r *RequestHeader) GetCompressType() compressor.CompressType {
 	r.RLock()
 	defer r.RUnlock()
-	return compressor.CompressType(r.CompressType)
+	return r.CompressType
 }
 
 func (r *RequestHeader) ResetHeader() {
@@ -174,7 +174,7 @@ func (r *ResponseHeader) Unmarshal(data []byte) (err error) {
 func (r *ResponseHeader) GetCompressType() compressor.CompressType {
 	r.RLock()
 	defer r.RUnlock()
-	return compressor.CompressType(r.CompressType)
+	return r.CompressType
 }
 
 // ResetHeader reset response header
